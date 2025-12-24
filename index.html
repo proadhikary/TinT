@@ -92,21 +92,21 @@
                 <button onclick="scrollToSubscribe()" class="hidden md:block bg-tint-red text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-tint-redHover transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                     Join Newsletter
                 </button>
-                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-gray-800 focus:outline-none">
+                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-gray-800 focus:outline-none p-2">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-tint-lavender border-t border-gray-200/20 absolute w-full shadow-xl">
-            <div class="flex flex-col px-6 py-4 space-y-4 font-medium">
-                <a href="#home" onclick="router('home')" class="block py-2 hover:text-tint-red border-b border-black/5">Home</a>
-                <a href="#about" onclick="router('about')" class="block py-2 hover:text-tint-red border-b border-black/5">About</a>
-                <a href="#blogs" onclick="router('blogs')" class="block py-2 hover:text-tint-red border-b border-black/5">Blogs</a>
-                <a href="#resources" onclick="router('resources')" class="block py-2 hover:text-tint-red border-b border-black/5">Resources</a>
-                <a href="https://www.linkedin.com/company/the-technology-informed-therapist/" target="_blank" class="block py-2 hover:text-tint-red">Community</a>
-                <button onclick="scrollToSubscribe()" class="w-full text-center bg-tint-red text-white px-5 py-3 rounded-lg font-bold shadow-md">
+        <div id="mobile-menu" class="hidden md:hidden bg-tint-lavender border-t border-gray-200/20 absolute w-full shadow-xl z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 font-medium">
+                <a href="#home" onclick="router('home')" class="block py-3 hover:text-tint-red border-b border-black/5 text-lg">Home</a>
+                <a href="#about" onclick="router('about')" class="block py-3 hover:text-tint-red border-b border-black/5 text-lg">About</a>
+                <a href="#blogs" onclick="router('blogs')" class="block py-3 hover:text-tint-red border-b border-black/5 text-lg">Blogs</a>
+                <a href="#resources" onclick="router('resources')" class="block py-3 hover:text-tint-red border-b border-black/5 text-lg">Resources</a>
+                <a href="https://www.linkedin.com/company/the-technology-informed-therapist/" target="_blank" class="block py-3 hover:text-tint-red text-lg">Community</a>
+                <button onclick="scrollToSubscribe()" class="w-full text-center bg-tint-red text-white px-5 py-4 rounded-xl font-bold shadow-md text-lg mt-2">
                     Join Newsletter
                 </button>
             </div>
@@ -118,9 +118,9 @@
     <main id="app" class="flex-grow"></main>
 
     <!-- FOOTER -->
-    <footer class="bg-tint-black text-white pt-20 pb-10">
+    <footer class="bg-tint-black text-white pt-16 pb-10">
         <div class="container mx-auto px-6 md:px-12">
-            <div class="grid md:grid-cols-12 gap-12 mb-16 border-b border-gray-800 pb-12">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 border-b border-gray-800 pb-12">
                 
                 <!-- Brand Section -->
                 <div class="md:col-span-5">
@@ -242,9 +242,9 @@
             const latestBlogs = blogsData.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
 
             let testimonialsHTML = testimonialsData.map(t => `
-                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-50 flex flex-col h-full transform hover:-translate-y-1 transition-transform duration-300">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-soft border border-gray-50 flex flex-col h-full transform hover:-translate-y-1 transition-transform duration-300">
                     <div class="text-tint-red text-5xl font-serif leading-none mb-4 opacity-30">“</div>
-                    <p class="text-gray-600 mb-6 italic text-lg leading-relaxed flex-grow">${t.text}</p>
+                    <p class="text-gray-600 mb-6 italic text-base md:text-lg leading-relaxed flex-grow">${t.text}</p>
                     <div class="border-t border-gray-100 pt-4">
                         <p class="font-bold text-gray-900">${t.author}</p>
                         <p class="text-sm text-tint-red font-medium">${t.title}</p>
@@ -254,7 +254,7 @@
 
             let latestBlogsHTML = latestBlogs.map(blog => `
                 <div onclick="router('blog/${blog.slug}')" class="group cursor-pointer bg-white rounded-xl p-4 hover:bg-tint-offwhite transition-colors border-b border-gray-100 last:border-0 flex gap-4 items-start">
-                    <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
+                    <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 rounded-lg overflow-hidden">
                         <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div>
@@ -262,8 +262,8 @@
                              <span class="text-[10px] font-bold text-tint-red uppercase tracking-wider">${blog.tags[0]}</span>
                              <span class="text-[10px] text-gray-400">• ${blog.date}</span>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-tint-red transition-colors leading-tight mb-2">${blog.title}</h3>
-                         <p class="text-gray-500 text-xs line-clamp-2">${blog.body.replace(/<[^>]*>?/gm, '')}</p>
+                        <h3 class="text-base md:text-lg font-bold text-gray-900 group-hover:text-tint-red transition-colors leading-tight mb-2">${blog.title}</h3>
+                         <p class="text-gray-500 text-xs line-clamp-2 hidden sm:block">${blog.body.replace(/<[^>]*>?/gm, '')}</p>
                     </div>
                 </div>
             `).join('');
@@ -275,23 +275,23 @@
                         <!-- Decorative Blob -->
                         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
 
-                        <div class="container mx-auto pt-20 pb-32 px-6 md:px-12 relative z-10">
+                        <div class="container mx-auto pt-12 pb-20 md:pt-20 md:pb-32 px-4 md:px-12 relative z-10">
                             <div class="max-w-4xl mx-auto text-center">
                                 <div class="inline-block bg-white/40 backdrop-blur-sm border border-white/50 px-4 py-1 rounded-full text-tint-gray text-xs font-bold uppercase tracking-widest mb-6">
                                     For the Modern Clinician
                                 </div>
-                                <h1 class="text-5xl md:text-7xl font-serif font-black text-gray-900 mb-8 leading-[1.1]">
-                                    AI Literacy & Opportunities <br/><span class="text-tint-red bg-white/50 px-2 decoration-clone">for Therapists</span>
+                                <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif font-black text-gray-900 mb-8 leading-tight">
+                                    AI Literacy & Opportunities... <br class="hidden md:inline"/><span class="text-tint-red bg-white/50 px-2 decoration-clone box-decoration-clone leading-normal md:leading-[1.1] inline-block md:inline mt-2 md:mt-0">for Therapists</span>
                                 </h1>
-                                <p class="text-xl md:text-2xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                                <p class="text-lg md:text-2xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
                                     TinT helps therapists build AI-resilient practices by upskilling, creating new revenue streams, and protecting the human spark.
                                 </p>
                                 
                                 <!-- Subscribe Box -->
                                 <div class="max-w-xl mx-auto mb-10">
-                                    <form onsubmit="event.preventDefault(); alert('Subscribed!');" class="flex flex-col sm:flex-row shadow-2xl rounded-full overflow-hidden bg-white p-1">
-                                        <input type="email" placeholder="Enter your email address..." required class="bg-transparent text-gray-900 px-6 py-4 outline-none flex-grow placeholder-gray-400 text-lg w-full sm:w-1/2">
-                                        <button type="submit" class="bg-tint-red text-white font-bold px-10 py-4 rounded-full hover:bg-tint-redHover transition-colors text-lg w-full sm:w-auto shadow-md">
+                                    <form onsubmit="event.preventDefault(); alert('Subscribed!');" class="flex flex-col sm:flex-row shadow-2xl rounded-3xl sm:rounded-full overflow-hidden bg-white p-2 sm:p-1 gap-2 sm:gap-0">
+                                        <input type="email" placeholder="Enter your email address..." required class="bg-transparent text-gray-900 px-6 py-4 outline-none flex-grow placeholder-gray-400 text-lg w-full sm:w-1/2 rounded-2xl sm:rounded-none">
+                                        <button type="submit" class="bg-tint-red text-white font-bold px-8 py-4 rounded-2xl sm:rounded-full hover:bg-tint-redHover transition-colors text-lg w-full sm:w-auto shadow-md">
                                             Join Now
                                         </button>
                                     </form>
@@ -304,37 +304,37 @@
                         
                         <!-- Wave Divider -->
                         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
-                            <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                            <svg class="relative block w-[calc(100%+1.3px)] h-[40px] md:h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                                 <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-tint-offwhite"></path>
                             </svg>
                         </div>
                     </section>
 
                     <!-- TESTIMONIALS -->
-                    <section class="bg-tint-offwhite py-24 px-6 md:px-12">
+                    <section class="bg-tint-offwhite py-16 md:py-24 px-4 md:px-12">
                         <div class="container mx-auto">
-                            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                            <div class="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16">
                                 <div>
-                                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-3">Clinicians Are Saying</h2>
+                                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-3">Clinicians Are Saying</h2>
                                     <p class="text-gray-500 text-lg">Trusted by professionals across the industry.</p>
                                 </div>
                             </div>
-                            <div class="grid md:grid-cols-3 gap-8">
+                            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
                                 ${testimonialsHTML}
                             </div>
                         </div>
                     </section>
 
                     <!-- BLOGS SECTION -->
-                    <section class="py-24 px-6 md:px-12 bg-white">
+                    <section class="py-16 md:py-24 px-4 md:px-12 bg-white">
                         <div class="container mx-auto">
-                            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 pb-6 border-b border-gray-100">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6 pb-6 border-b border-gray-100">
                                 <div>
-                                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-2">Read Posts</h2>
+                                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-2">Read Posts</h2>
                                     <p class="text-gray-500 text-lg">Deep dives into the intersection of humanity & tech.</p>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                     <button onclick="router('blogs')" class="group flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold px-6 py-3 rounded-full transition-colors">
+                                <div class="flex items-center gap-4 w-full md:w-auto">
+                                     <button onclick="router('blogs')" class="w-full md:w-auto justify-center group flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold px-6 py-3 rounded-full transition-colors">
                                         Read all posts <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                                     </button>
                                 </div>
@@ -345,19 +345,19 @@
                                 <div onclick="router('blog/${featuredBlog.slug}')" class="lg:col-span-7 group cursor-pointer relative">
                                     <div class="absolute -inset-2 bg-gradient-to-r from-tint-lavender to-pink-100 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"></div>
                                     <div class="relative bg-white rounded-2xl overflow-hidden shadow-soft border border-gray-100 h-full flex flex-col">
-                                        <div class="h-[350px] overflow-hidden relative">
+                                        <div class="h-[250px] md:h-[350px] overflow-hidden relative">
                                             <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
                                             <img src="${featuredBlog.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="${featuredBlog.title}">
-                                            <div class="absolute top-6 left-6 z-20">
-                                                <span class="bg-tint-red text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">Featured Issue</span>
+                                            <div class="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+                                                <span class="bg-tint-red text-white text-[10px] md:text-xs font-bold px-3 py-1 md:px-4 md:py-2 rounded-full uppercase tracking-widest shadow-lg">Featured Issue</span>
                                             </div>
                                         </div>
-                                        <div class="p-8 md:p-10 flex flex-col flex-grow">
+                                        <div class="p-6 md:p-10 flex flex-col flex-grow">
                                             <div class="flex gap-3 mb-4">
                                                  ${featuredBlog.tags.map(tag => `<span class="text-xs font-bold text-tint-red uppercase tracking-wider bg-red-50 px-2 py-1 rounded">#${tag}</span>`).join('')}
                                             </div>
-                                            <h3 class="text-3xl md:text-4xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${featuredBlog.title}</h3>
-                                            <p class="text-gray-500 text-lg mb-6 line-clamp-3 leading-relaxed">${featuredBlog.body.replace(/<[^>]*>?/gm, '')}</p>
+                                            <h3 class="text-2xl md:text-4xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${featuredBlog.title}</h3>
+                                            <p class="text-gray-500 text-base md:text-lg mb-6 line-clamp-3 leading-relaxed">${featuredBlog.body.replace(/<[^>]*>?/gm, '')}</p>
                                             <div class="mt-auto flex items-center gap-2 text-sm text-gray-400 font-medium">
                                                 <span>${featuredBlog.date}</span>
                                                 <span>•</span>
@@ -385,25 +385,25 @@
                     </section>
 
                     <!-- CQAaS SECTION -->
-                    <section class="bg-tint-lavender py-24 px-6 md:px-12 relative">
+                    <section class="bg-tint-lavender py-16 md:py-24 px-4 md:px-12 relative">
                          <!-- Decorative Pattern -->
                         <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#444 1px, transparent 1px); background-size: 20px 20px;"></div>
 
                         <div class="container mx-auto relative z-10">
                             <div class="max-w-4xl mx-auto">
-                                <div class="text-center mb-16">
+                                <div class="text-center mb-12 md:mb-16">
                                     <span class="text-tint-red font-bold tracking-widest uppercase text-sm mb-2 block">Services</span>
-                                    <h2 class="text-4xl md:text-6xl font-serif font-black mb-6 text-gray-900">Clinical QA as a Service (CQAaS)</h2>
-                                    <p class="text-xl md:text-2xl text-gray-700 font-light">Are you interested in giving clinical feedback to founders?</p>
+                                    <h2 class="text-3xl md:text-6xl font-serif font-black mb-4 md:mb-6 text-gray-900 leading-tight">Clinical QA as a Service (CQAaS)</h2>
+                                    <p class="text-lg md:text-2xl text-gray-700 font-light">Are you interested in giving clinical feedback to founders?</p>
                                 </div>
 
                                 <!-- Accordion FAQ Style -->
                                 <div class="space-y-4">
                                     <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
                                         <details class="group p-6 md:p-8" open>
-                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-lg md:text-2xl font-serif text-gray-900">
                                                 <span>What QA Engineering Actually Is</span>
-                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ml-4">
                                                     <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
                                                 </span>
                                             </summary>
@@ -421,9 +421,9 @@
 
                                     <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
                                         <details class="group p-6 md:p-8">
-                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-lg md:text-2xl font-serif text-gray-900">
                                                 <span>Why Mental Health Products Need Clinical QA</span>
-                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ml-4">
                                                     <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
                                                 </span>
                                             </summary>
@@ -441,9 +441,9 @@
 
                                     <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
                                         <details class="group p-6 md:p-8">
-                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-lg md:text-2xl font-serif text-gray-900">
                                                 <span>What Actually Happens in CQAaS</span>
-                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ml-4">
                                                     <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
                                                 </span>
                                             </summary>
@@ -455,8 +455,8 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mt-16 text-center">
-                                    <button class="bg-gray-900 text-white font-bold text-lg px-10 py-5 rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-800 hover:-translate-y-1 transition-all">
+                                <div class="mt-12 md:mt-16 text-center">
+                                    <button class="bg-gray-900 text-white font-bold text-lg w-full md:w-auto px-10 py-5 rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-800 hover:-translate-y-1 transition-all">
                                         Get Involved with CQAaS
                                     </button>
                                 </div>
@@ -470,7 +470,7 @@
         function renderAbout() {
             return `
                 <div class="page-enter page-enter-active">
-                    <section class="py-24 px-6 md:px-12 bg-white min-h-screen">
+                    <section class="py-16 md:py-24 px-4 md:px-12 bg-white min-h-screen">
                         <div class="container mx-auto max-w-4xl">
                             <!-- Breadcrumb -->
                             <div class="flex items-center gap-2 text-sm text-gray-400 mb-8 font-medium">
@@ -479,9 +479,9 @@
                                 <span class="text-gray-800">About</span>
                             </div>
 
-                            <div class="mb-16 border-b border-gray-100 pb-10">
-                                 <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">About TinT</h1>
-                                 <p class="text-2xl text-gray-500 font-serif italic">Bridging the gap between Psychology and Technology</p>
+                            <div class="mb-12 md:mb-16 border-b border-gray-100 pb-10">
+                                 <h1 class="text-4xl md:text-6xl font-serif font-black mb-4 md:mb-6 text-gray-900">About TinT</h1>
+                                 <p class="text-xl md:text-2xl text-gray-500 font-serif italic">Bridging the gap between Psychology and Technology</p>
                             </div>
                            
                             <div class="flex flex-col md:flex-row gap-12">
@@ -498,7 +498,7 @@
 
                                     <p>I've collaborated with therapists as an experience designer, event manager, community organiser, sketch-noter, grants writer, career pivots counsellor, cat-sitter, that one time as a wall painter, and more recently as an AI product founder.</p>
 
-                                    <blockquote class="text-2xl font-serif not-italic my-10 bg-tint-offwhite p-8 rounded-xl border-l-0 relative">
+                                    <blockquote class="text-xl md:text-2xl font-serif not-italic my-10 bg-tint-offwhite p-6 md:p-8 rounded-xl border-l-0 relative">
                                         <i class="fa-solid fa-quote-left text-tint-red opacity-20 text-4xl absolute top-4 left-4"></i>
                                         <span class="relative z-10 font-bold text-gray-900">"The point I’m trying to make is, I’ve observed the clinical community from both inside and out."</span>
                                     </blockquote>
@@ -530,9 +530,9 @@
                             </div>
 
                              <!-- Subscribe Box -->
-                            <div class="mt-20 bg-gray-900 text-white p-10 rounded-3xl text-center shadow-xl">
+                            <div class="mt-20 bg-gray-900 text-white p-6 md:p-10 rounded-3xl text-center shadow-xl">
                                 <i class="fa-regular fa-paper-plane text-4xl mb-4 text-tint-red"></i>
-                                <h4 class="font-bold font-serif text-3xl mb-4">Join the community</h4>
+                                <h4 class="font-bold font-serif text-2xl md:text-3xl mb-4">Join the community</h4>
                                 <p class="text-gray-400 mb-8">Join thousands of others.</p>
                                 <form onsubmit="event.preventDefault(); alert('Subscribed!');" class="flex flex-col sm:flex-row shadow-lg rounded-xl overflow-hidden gap-2 max-w-lg mx-auto">
                                     <input type="email" placeholder="Your email address" required class="bg-white/10 text-white px-6 py-4 outline-none flex-grow placeholder-gray-400 rounded-lg border border-white/20 focus:border-tint-red transition-colors">
@@ -552,16 +552,16 @@
 
             const blogCardsHTML = sortedBlogs.map(blog => `
                 <div onclick="router('blog/${blog.slug}')" class="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-2xl hover:-translate-y-2 transition-all border border-gray-100 flex flex-col h-full">
-                    <div class="h-64 overflow-hidden relative">
+                    <div class="h-48 md:h-64 overflow-hidden relative">
                         <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         ${blog.featured ? `<div class="absolute top-4 right-4 bg-tint-red text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-md">Featured</div>` : ''}
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                     </div>
-                    <div class="p-8 flex flex-col flex-grow">
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
                         <div class="flex flex-wrap gap-2 mb-4">
                             ${blog.tags.map(tag => `<span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider group-hover:bg-tint-lavender group-hover:text-indigo-900 transition-colors">#${tag}</span>`).join('')}
                         </div>
-                        <h2 class="text-2xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${blog.title}</h2>
+                        <h2 class="text-xl md:text-2xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${blog.title}</h2>
                         <div class="text-gray-600 mb-6 line-clamp-3 text-sm leading-relaxed">${blog.body.replace(/<[^>]*>?/gm, '')}</div>
                         <div class="mt-auto flex items-center justify-between pt-6 border-t border-gray-100 text-xs text-gray-400 font-bold uppercase tracking-wider">
                             <div class="flex items-center gap-2">
@@ -577,12 +577,12 @@
 
             return `
                 <div class="page-enter page-enter-active">
-                    <section class="bg-tint-offwhite py-24 px-6 md:px-12 min-h-screen">
+                    <section class="bg-tint-offwhite py-16 md:py-24 px-4 md:px-12 min-h-screen">
                         <div class="container mx-auto">
-                            <div class="max-w-4xl mx-auto mb-20 text-center">
+                            <div class="max-w-4xl mx-auto mb-12 md:mb-20 text-center">
                                 <span class="text-tint-red font-bold tracking-widest uppercase text-sm mb-4 block">The Journal</span>
-                                <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">All Posts</h1>
-                                <p class="text-xl text-gray-500 max-w-2xl mx-auto">Exploring the intersection of humanity, psychology, and algorithms. One article at a time.</p>
+                                <h1 class="text-4xl md:text-6xl font-serif font-black mb-6 text-gray-900">All Posts</h1>
+                                <p class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">Exploring the intersection of humanity, psychology, and algorithms. One article at a time.</p>
                             </div>
                             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 ${blogCardsHTML}
@@ -602,21 +602,21 @@
 
             return `
                 <div class="page-enter page-enter-active">
-                    <article class="py-24 px-6 md:px-12 bg-white">
+                    <article class="py-16 md:py-24 px-4 md:px-12 bg-white">
                         <div class="container mx-auto max-w-3xl">
                              <!-- Breadcrumb -->
-                            <div class="flex items-center gap-2 text-sm text-gray-400 mb-12 font-medium justify-center">
+                            <div class="flex items-center gap-2 text-sm text-gray-400 mb-8 md:mb-12 font-medium justify-center">
                                 <a href="#blogs" onclick="router('blogs')" class="hover:text-tint-red">All Posts</a>
                                 <i class="fa-solid fa-chevron-right text-xs"></i>
                                 <span class="text-gray-800 line-clamp-1 max-w-[200px]">${blog.title}</span>
                             </div>
 
                             <!-- Header -->
-                            <div class="mb-12 text-center">
-                                <div class="flex justify-center gap-2 mb-8">
+                            <div class="mb-10 md:mb-12 text-center">
+                                <div class="flex justify-center gap-2 mb-6 md:mb-8">
                                     ${blog.tags.map(tag => `<span class="bg-tint-lavender/50 text-indigo-900 text-xs px-4 py-1.5 rounded-full font-bold uppercase tracking-widest">${tag}</span>`).join('')}
                                 </div>
-                                <h1 class="text-4xl md:text-6xl font-serif font-black text-gray-900 mb-8 leading-tight">${blog.title}</h1>
+                                <h1 class="text-3xl md:text-6xl font-serif font-black text-gray-900 mb-6 md:mb-8 leading-tight">${blog.title}</h1>
                                 <div class="text-gray-500 font-medium flex justify-center gap-6 text-sm uppercase tracking-wider">
                                     <span class="flex items-center gap-2"><i class="fa-regular fa-calendar"></i> ${blog.date}</span>
                                     <span class="text-gray-300">|</span>
@@ -625,7 +625,7 @@
                             </div>
 
                             <!-- Hero Image -->
-                            <div class="rounded-3xl overflow-hidden shadow-2xl mb-16 h-[300px] md:h-[500px]">
+                            <div class="rounded-3xl overflow-hidden shadow-2xl mb-12 md:mb-16 h-[250px] md:h-[500px]">
                                 <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover">
                             </div>
 
@@ -635,8 +635,8 @@
                             </div>
                             
                             <!-- Author Box -->
-                            <div class="mt-20 p-8 bg-tint-offwhite rounded-2xl flex items-center gap-6">
-                                <div class="w-16 h-16 bg-tint-red rounded-full flex items-center justify-center text-white text-2xl font-serif font-bold">H</div>
+                            <div class="mt-16 md:mt-20 p-6 md:p-8 bg-tint-offwhite rounded-2xl flex items-center gap-6">
+                                <div class="w-16 h-16 bg-tint-red rounded-full flex items-center justify-center text-white text-2xl font-serif font-bold flex-shrink-0">H</div>
                                 <div>
                                     <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Written by</p>
                                     <p class="font-serif font-bold text-xl text-gray-900">Harshali</p>
@@ -645,7 +645,7 @@
                             </div>
 
                             <!-- Back Button -->
-                            <div class="mt-16 pt-10 border-t border-gray-100 text-center">
+                            <div class="mt-12 md:mt-16 pt-10 border-t border-gray-100 text-center">
                                 <button onclick="router('blogs')" class="inline-flex items-center gap-2 text-gray-900 font-bold hover:text-tint-red transition-colors px-6 py-3 border border-gray-200 rounded-full hover:border-tint-red">
                                     <i class="fa-solid fa-arrow-left"></i> Back to all posts
                                 </button>
@@ -659,13 +659,13 @@
         function renderResources() {
             const resourcesHTML = resourcesData.map(r => `
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 flex flex-col h-full transform hover:-translate-y-1">
-                    <div class="h-64 overflow-hidden relative group">
+                    <div class="h-48 md:h-64 overflow-hidden relative group">
                          <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="text-white font-bold border-2 border-white px-6 py-2 rounded-full">View Details</span>
                          </div>
                     </div>
-                    <div class="p-8 flex flex-col flex-grow">
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
                         <h3 class="text-xl font-serif font-bold mb-3 text-gray-900 leading-tight">${r.title}</h3>
                         <p class="text-gray-500 mb-6 flex-grow text-sm leading-relaxed">${r.description}</p>
                         <a href="${r.link}" class="mt-auto block text-center bg-white text-gray-900 font-bold py-3 rounded-lg border-2 border-gray-100 hover:border-tint-red hover:text-tint-red transition-colors">
@@ -677,17 +677,17 @@
 
             return `
                 <div class="page-enter page-enter-active">
-                    <section class="bg-tint-lavender min-h-screen py-24 px-6 md:px-12 relative overflow-hidden">
+                    <section class="bg-tint-lavender min-h-screen py-16 md:py-24 px-4 md:px-12 relative overflow-hidden">
                         <!-- BG Decoration -->
-                        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-white opacity-20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+                        <div class="absolute top-0 right-0 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-white opacity-20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
 
                         <div class="container mx-auto relative z-10">
-                            <div class="text-center mb-20 max-w-2xl mx-auto">
+                            <div class="text-center mb-16 md:mb-20 max-w-2xl mx-auto">
                                 <span class="bg-white/50 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-gray-800 mb-6 inline-block backdrop-blur">Library</span>
-                                <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">Curated Resources</h1>
-                                <p class="text-xl text-gray-700 font-light">Books, tools, and guides to help you navigate the future of therapy with confidence.</p>
+                                <h1 class="text-4xl md:text-6xl font-serif font-black mb-6 text-gray-900">Curated Resources</h1>
+                                <p class="text-lg md:text-xl text-gray-700 font-light">Books, tools, and guides to help you navigate the future of therapy with confidence.</p>
                             </div>
-                            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                                 ${resourcesHTML}
                             </div>
                         </div>
