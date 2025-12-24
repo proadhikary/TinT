@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Technology Informed Therapist (TinT)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tint: {
+                            lavender: '#D2CDFF',
+                            lavenderDark: '#bdb6fc',
+                            red: '#E93150',
+                            redHover: '#c4233f',
+                            offwhite: '#F6F5F2',
+                            black: '#121212',
+                            gray: '#4A4A4A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Smooth base styles */
+        body { -webkit-font-smoothing: antialiased; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #D2CDFF; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E93150; }
+
+        /* Typography improvements */
+        .prose p { margin-bottom: 1.5em; line-height: 1.8; color: #374151; }
+        .prose h2 { margin-top: 2em; margin-bottom: 1em; font-family: 'Merriweather', serif; font-weight: 900; color: #111827; }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.75em; font-family: 'Merriweather', serif; font-weight: 700; color: #1F2937; }
+        .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1.5em; }
+        .prose blockquote { border-left: 4px solid #E93150; padding-left: 1rem; font-style: italic; color: #4B5563; }
+
+        /* Navigation Active State */
+        .nav-link.active { color: #E93150; font-weight: 600; }
+
+        /* Page Transitions */
+        .page-enter { opacity: 0; transform: translateY(10px); }
+        .page-enter-active { opacity: 1; transform: translateY(0); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white flex flex-col min-h-screen">
+
+    <!-- NAVIGATION -->
+    <header class="bg-tint-lavender sticky top-0 z-50 shadow-sm transition-all duration-300" id="main-header">
+        <div class="container mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#home" onclick="router('home')" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-tint-red shadow-md group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                </div>
+                <span class="font-serif font-bold text-xl md:text-2xl text-gray-900 tracking-tight">TinT</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-800">
+                <a href="#home" onclick="router('home')" class="nav-link hover:text-tint-red transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tint-red after:transition-all hover:after:w-full">Home</a>
+                <a href="#about" onclick="router('about')" class="nav-link hover:text-tint-red transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tint-red after:transition-all hover:after:w-full">About</a>
+                <a href="#blogs" onclick="router('blogs')" class="nav-link hover:text-tint-red transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tint-red after:transition-all hover:after:w-full">Blogs</a>
+                <a href="#resources" onclick="router('resources')" class="nav-link hover:text-tint-red transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tint-red after:transition-all hover:after:w-full">Resources</a>
+                <a href="https://www.linkedin.com/company/the-technology-informed-therapist/" target="_blank" class="hover:text-tint-red transition-colors flex items-center gap-1">
+                    Community <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+            </nav>
+
+            <!-- CTA & Mobile Menu Button -->
+            <div class="flex items-center gap-4">
+                <button onclick="scrollToSubscribe()" class="hidden md:block bg-tint-red text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-tint-redHover transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    Join Newsletter
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-gray-800 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-tint-lavender border-t border-gray-200/20 absolute w-full shadow-xl">
+            <div class="flex flex-col px-6 py-4 space-y-4 font-medium">
+                <a href="#home" onclick="router('home')" class="block py-2 hover:text-tint-red border-b border-black/5">Home</a>
+                <a href="#about" onclick="router('about')" class="block py-2 hover:text-tint-red border-b border-black/5">About</a>
+                <a href="#blogs" onclick="router('blogs')" class="block py-2 hover:text-tint-red border-b border-black/5">Blogs</a>
+                <a href="#resources" onclick="router('resources')" class="block py-2 hover:text-tint-red border-b border-black/5">Resources</a>
+                <a href="https://www.linkedin.com/company/the-technology-informed-therapist/" target="_blank" class="block py-2 hover:text-tint-red">Community</a>
+                <button onclick="scrollToSubscribe()" class="w-full text-center bg-tint-red text-white px-5 py-3 rounded-lg font-bold shadow-md">
+                    Join Newsletter
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <!-- This is where the 'pages' are swapped in and out -->
+    <main id="app" class="flex-grow"></main>
+
+    <!-- FOOTER -->
+    <footer class="bg-tint-black text-white pt-20 pb-10">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid md:grid-cols-12 gap-12 mb-16 border-b border-gray-800 pb-12">
+                
+                <!-- Brand Section -->
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-3 font-serif font-bold text-3xl tracking-tight mb-6">
+                        <div class="w-10 h-10 bg-tint-red rounded-full flex items-center justify-center text-white text-lg">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <span>TinT</span>
+                    </div>
+                    <p class="text-gray-400 mb-8 max-w-sm leading-relaxed">
+                        Empowering therapists to build AI-resilient practices while protecting the human spark in a machine-mediated world.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center hover:bg-tint-red transition-all transform hover:-translate-y-1"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center hover:bg-tint-red transition-all transform hover:-translate-y-1"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center hover:bg-tint-red transition-all transform hover:-translate-y-1"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Sitemap -->
+                <div class="md:col-span-3">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-tint-lavender">Pages</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#home" onclick="router('home')" class="hover:text-white hover:translate-x-1 inline-block transition-all">Home</a></li>
+                        <li><a href="#about" onclick="router('about')" class="hover:text-white hover:translate-x-1 inline-block transition-all">About Founder</a></li>
+                        <li><a href="#blogs" onclick="router('blogs')" class="hover:text-white hover:translate-x-1 inline-block transition-all">All Blogs</a></li>
+                        <li><a href="#resources" onclick="router('resources')" class="hover:text-white hover:translate-x-1 inline-block transition-all">Books & Resources</a></li>
+                        <li><a href="#" class="hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer Subscribe -->
+                <div class="md:col-span-4">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-tint-lavender">Stay in the loop</h4>
+                    <p class="text-gray-400 mb-6 text-sm">Get the latest insights on AI in therapy delivered to your inbox.</p>
+                    <form onsubmit="event.preventDefault(); alert('Thanks for subscribing!');" class="flex flex-col gap-3">
+                        <input type="email" placeholder="email@example.com" required class="bg-gray-900 border border-gray-800 text-white px-5 py-3 rounded-lg outline-none focus:border-tint-red focus:ring-1 focus:ring-tint-red transition-all placeholder-gray-600">
+                        <button type="submit" class="bg-tint-red text-white font-bold px-6 py-3 rounded-lg hover:bg-tint-redHover transition-colors shadow-lg">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center text-gray-600 text-sm">
+                &copy; 2025 The Technology Informed Therapist. Built with <i class="fa-solid fa-heart text-tint-red mx-1"></i> for Clinicians.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- MOCK DATABASE ---
+        const blogsData = [
+            {
+                id: 1,
+                slug: "future-of-ai-in-therapy",
+                title: "The Future of AI in Therapy",
+                body: "<p>Artificial Intelligence is rapidly transforming the landscape of mental health care. From administrative automation to predictive analytics, the tools available to therapists are expanding.</p><h3>What does this mean for the therapeutic alliance?</h3><p>Many fear that AI will replace the human connection. However, the 'Technology Informed Therapist' views AI as a scaffold, not a substitute.</p><p>Imagine having a co-pilot that handles your notes, schedules your appointments, and even flags potential risk factors based on intake forms. This allows the clinician to focus entirely on the client sitting in front of them.</p><blockquote class='italic border-l-4 border-tint-red pl-4 my-4'>'AI is not here to replace therapists, but therapists who use AI will replace those who don't.'</blockquote><p>We must pivot our understanding from fear to curiosity. The future belongs to the adaptable.</p>",
+                image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop",
+                date: "Oct 12, 2025",
+                readTime: "5 min read",
+                tags: ["AI", "Future", "Ethics"],
+                featured: true
+            },
+            {
+                id: 2,
+                slug: "ethical-considerations-chatbots",
+                title: "Ethical Considerations of Therapy Chatbots",
+                body: "<p>As chatbots become more sophisticated, patients are increasingly turning to them for support. While accessibility is a major benefit, privacy and safety remain critical concerns.</p><p>We must ask: Who owns the data? What happens in a crisis? Is the advice clinically valid?</p>",
+                image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=800&auto=format&fit=crop",
+                date: "Sep 28, 2025",
+                readTime: "7 min read",
+                tags: ["Ethics", "Chatbots", "Safety"],
+                featured: false
+            },
+            {
+                id: 3,
+                slug: "digital-phenotyping",
+                title: "Introduction to Digital Phenotyping",
+                body: "<p>Digital phenotyping is the moment-by-moment quantification of the individual-level human phenotype in situ using data from personal digital devices.</p><p>Basically, your phone knows when you are depressed before you do, based on movement, screen time, and typing speed.</p>",
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+                date: "Sep 15, 2025",
+                readTime: "4 min read",
+                tags: ["Data", "Research", "Tech"],
+                featured: false
+            },
+            {
+                id: 4,
+                slug: "starting-private-practice-tech",
+                title: "Tech Stack for a Modern Private Practice",
+                body: "<p>Gone are the days of paper files. Here is a comprehensive guide to the EHRs, billing software, and secure communication tools you need to run a seamless practice in 2025.</p>",
+                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
+                date: "Aug 30, 2025",
+                readTime: "8 min read",
+                tags: ["Practice Management", "Tools"],
+                featured: false
+            }
+        ];
+
+        const resourcesData = [
+            { id: 1, title: "The AI Revolution in Medicine", description: "A comprehensive look at how GPT-4 and beyond are changing healthcare.", image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=400&auto=format&fit=crop", link: "#" },
+            { id: 2, title: "Digital Mental Health", description: "Innovations in psychology and psychiatry technology.", image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop", link: "#" },
+            { id: 3, title: "Design for Care", description: "Applying service design principles to mental health frameworks.", image: "https://images.unsplash.com/photo-1555212697-194d092e3b8f?q=80&w=400&auto=format&fit=crop", link: "#" },
+            { id: 4, title: "Technotherapy Handbook", description: "Practical guide for clinicians integrating apps into therapy.", image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=400&auto=format&fit=crop", link: "#" },
+            { id: 5, title: "The Uncanny Valley", description: "Memoir regarding technology, emotion and the human experience.", image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400&auto=format&fit=crop", link: "#" }
+        ];
+
+        const testimonialsData = [
+            { text: "TinT has completely changed how I view technology in my practice. I feel empowered, not threatened.", author: "Dr. Sarah J.", title: "Clinical Psychologist" },
+            { text: "The Clinical QA insights are invaluable. Bridging the gap between code and care is exactly what we needed.", author: "Mark R.", title: "HealthTech Founder" },
+            { text: "Finally, a newsletter that speaks my language. Practical, ethical, and forward-thinking.", author: "Emily C.", title: "LCSW" }
+        ];
+
+        // --- VIEWS ---
+
+        function renderHome() {
+            const featuredBlog = blogsData.find(b => b.featured) || blogsData[0];
+            const latestBlogs = blogsData.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+
+            let testimonialsHTML = testimonialsData.map(t => `
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-50 flex flex-col h-full transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="text-tint-red text-5xl font-serif leading-none mb-4 opacity-30">“</div>
+                    <p class="text-gray-600 mb-6 italic text-lg leading-relaxed flex-grow">${t.text}</p>
+                    <div class="border-t border-gray-100 pt-4">
+                        <p class="font-bold text-gray-900">${t.author}</p>
+                        <p class="text-sm text-tint-red font-medium">${t.title}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            let latestBlogsHTML = latestBlogs.map(blog => `
+                <div onclick="router('blog/${blog.slug}')" class="group cursor-pointer bg-white rounded-xl p-4 hover:bg-tint-offwhite transition-colors border-b border-gray-100 last:border-0 flex gap-4 items-start">
+                    <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
+                        <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                        <div class="flex gap-2 mb-1">
+                             <span class="text-[10px] font-bold text-tint-red uppercase tracking-wider">${blog.tags[0]}</span>
+                             <span class="text-[10px] text-gray-400">• ${blog.date}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-tint-red transition-colors leading-tight mb-2">${blog.title}</h3>
+                         <p class="text-gray-500 text-xs line-clamp-2">${blog.body.replace(/<[^>]*>?/gm, '')}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="page-enter page-enter-active">
+                    <!-- HERO SECTION -->
+                    <section class="bg-tint-lavender relative overflow-hidden">
+                        <!-- Decorative Blob -->
+                        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+
+                        <div class="container mx-auto pt-20 pb-32 px-6 md:px-12 relative z-10">
+                            <div class="max-w-4xl mx-auto text-center">
+                                <div class="inline-block bg-white/40 backdrop-blur-sm border border-white/50 px-4 py-1 rounded-full text-tint-gray text-xs font-bold uppercase tracking-widest mb-6">
+                                    For the Modern Clinician
+                                </div>
+                                <h1 class="text-5xl md:text-7xl font-serif font-black text-gray-900 mb-8 leading-[1.1]">
+                                    AI Literacy & Opportunities <br/><span class="text-tint-red bg-white/50 px-2 decoration-clone">for Therapists</span>
+                                </h1>
+                                <p class="text-xl md:text-2xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                                    TinT helps therapists build AI-resilient practices by upskilling, creating new revenue streams, and protecting the human spark.
+                                </p>
+                                
+                                <!-- Subscribe Box -->
+                                <div class="max-w-xl mx-auto mb-10">
+                                    <form onsubmit="event.preventDefault(); alert('Subscribed!');" class="flex flex-col sm:flex-row shadow-2xl rounded-full overflow-hidden bg-white p-1">
+                                        <input type="email" placeholder="Enter your email address..." required class="bg-transparent text-gray-900 px-6 py-4 outline-none flex-grow placeholder-gray-400 text-lg w-full sm:w-1/2">
+                                        <button type="submit" class="bg-tint-red text-white font-bold px-10 py-4 rounded-full hover:bg-tint-redHover transition-colors text-lg w-full sm:w-auto shadow-md">
+                                            Join Now
+                                        </button>
+                                    </form>
+                                    <p class="text-gray-600 font-medium mt-4 text-sm">
+                                        We’re into writing as well, go on and <a href="#blogs" onclick="router('blogs')" class="text-tint-red underline decoration-2 underline-offset-2 hover:text-black font-bold">read an issue</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Wave Divider -->
+                        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
+                            <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-tint-offwhite"></path>
+                            </svg>
+                        </div>
+                    </section>
+
+                    <!-- TESTIMONIALS -->
+                    <section class="bg-tint-offwhite py-24 px-6 md:px-12">
+                        <div class="container mx-auto">
+                            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                                <div>
+                                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-3">Clinicians Are Saying</h2>
+                                    <p class="text-gray-500 text-lg">Trusted by professionals across the industry.</p>
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-8">
+                                ${testimonialsHTML}
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- BLOGS SECTION -->
+                    <section class="py-24 px-6 md:px-12 bg-white">
+                        <div class="container mx-auto">
+                            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 pb-6 border-b border-gray-100">
+                                <div>
+                                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-2">Read Posts</h2>
+                                    <p class="text-gray-500 text-lg">Deep dives into the intersection of humanity & tech.</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                     <button onclick="router('blogs')" class="group flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold px-6 py-3 rounded-full transition-colors">
+                                        Read all posts <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="grid lg:grid-cols-12 gap-10">
+                                <!-- Featured Post (Left) -->
+                                <div onclick="router('blog/${featuredBlog.slug}')" class="lg:col-span-7 group cursor-pointer relative">
+                                    <div class="absolute -inset-2 bg-gradient-to-r from-tint-lavender to-pink-100 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"></div>
+                                    <div class="relative bg-white rounded-2xl overflow-hidden shadow-soft border border-gray-100 h-full flex flex-col">
+                                        <div class="h-[350px] overflow-hidden relative">
+                                            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
+                                            <img src="${featuredBlog.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="${featuredBlog.title}">
+                                            <div class="absolute top-6 left-6 z-20">
+                                                <span class="bg-tint-red text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">Featured Issue</span>
+                                            </div>
+                                        </div>
+                                        <div class="p-8 md:p-10 flex flex-col flex-grow">
+                                            <div class="flex gap-3 mb-4">
+                                                 ${featuredBlog.tags.map(tag => `<span class="text-xs font-bold text-tint-red uppercase tracking-wider bg-red-50 px-2 py-1 rounded">#${tag}</span>`).join('')}
+                                            </div>
+                                            <h3 class="text-3xl md:text-4xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${featuredBlog.title}</h3>
+                                            <p class="text-gray-500 text-lg mb-6 line-clamp-3 leading-relaxed">${featuredBlog.body.replace(/<[^>]*>?/gm, '')}</p>
+                                            <div class="mt-auto flex items-center gap-2 text-sm text-gray-400 font-medium">
+                                                <span>${featuredBlog.date}</span>
+                                                <span>•</span>
+                                                <span>${featuredBlog.readTime}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Latest List (Right) -->
+                                <div class="lg:col-span-5 flex flex-col justify-center">
+                                    <h3 class="font-serif font-bold text-xl text-gray-400 mb-6 uppercase tracking-wider">Latest Updates</h3>
+                                    <div class="flex flex-col gap-4">
+                                        ${latestBlogsHTML}
+                                    </div>
+                                    <div class="mt-8">
+                                        <div class="bg-tint-lavender/20 p-6 rounded-xl border border-tint-lavender text-center">
+                                            <p class="font-bold text-tint-black mb-3">Want more insights?</p>
+                                            <button onclick="router('blogs')" class="text-tint-red font-bold hover:underline">Browse the Archive</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CQAaS SECTION -->
+                    <section class="bg-tint-lavender py-24 px-6 md:px-12 relative">
+                         <!-- Decorative Pattern -->
+                        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#444 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+                        <div class="container mx-auto relative z-10">
+                            <div class="max-w-4xl mx-auto">
+                                <div class="text-center mb-16">
+                                    <span class="text-tint-red font-bold tracking-widest uppercase text-sm mb-2 block">Services</span>
+                                    <h2 class="text-4xl md:text-6xl font-serif font-black mb-6 text-gray-900">Clinical QA as a Service (CQAaS)</h2>
+                                    <p class="text-xl md:text-2xl text-gray-700 font-light">Are you interested in giving clinical feedback to founders?</p>
+                                </div>
+
+                                <!-- Accordion FAQ Style -->
+                                <div class="space-y-4">
+                                    <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
+                                        <details class="group p-6 md:p-8" open>
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                                <span>What QA Engineering Actually Is</span>
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                    <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
+                                                </span>
+                                            </summary>
+                                            <div class="text-gray-600 mt-6 prose max-w-none border-t pt-6">
+                                                <p>QA (Quality Assurance) engineering sits at the heart of how software is built. Traditionally, a QA engineer tests software for various checks and parameters throughout the development cycle to ensure it meets design and performance standards.</p>
+                                                <p>They design test cases and scenarios that check whether a product works as intended. These include:</p>
+                                                <ul class="list-disc pl-5 space-y-2 marker:text-tint-red">
+                                                    <li>Standard “normal use” cases</li>
+                                                    <li>Error-cases that present what happens when the system encounters an error</li>
+                                                    <li>Edge-cases that stress-test the system</li>
+                                                </ul>
+                                            </div>
+                                        </details>
+                                    </div>
+
+                                    <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
+                                        <details class="group p-6 md:p-8">
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                                <span>Why Mental Health Products Need Clinical QA</span>
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                    <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
+                                                </span>
+                                            </summary>
+                                            <div class="text-gray-600 mt-6 prose max-w-none border-t pt-6">
+                                                <p>MH-AI products are a special category. The cost of discovering a failure point through a live user is often simply too high. This is where clinicians come in.</p>
+                                                <p>Clinical QA is where product teams and clinicians work together to:</p>
+                                                <ul class="list-disc pl-5 space-y-2 marker:text-tint-red">
+                                                    <li>Uncover edge-cases a product team would never imagine</li>
+                                                    <li>Check whether responses are clinically appropriate</li>
+                                                    <li>Ensure the tool behaves safely under stress</li>
+                                                </ul>
+                                            </div>
+                                        </details>
+                                    </div>
+
+                                    <div class="bg-white rounded-2xl overflow-hidden shadow-md border-2 border-transparent hover:border-tint-red/20 transition-all">
+                                        <details class="group p-6 md:p-8">
+                                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-xl md:text-2xl font-serif text-gray-900">
+                                                <span>What Actually Happens in CQAaS</span>
+                                                <span class="transition-transform duration-300 group-open:rotate-180 bg-tint-offwhite w-10 h-10 rounded-full flex items-center justify-center">
+                                                    <i class="fa-solid fa-chevron-down text-tint-red text-sm"></i>
+                                                </span>
+                                            </summary>
+                                            <div class="text-gray-600 mt-6 prose max-w-none border-t pt-6">
+                                                <p>Before testing a product, you need to understand how it’s intended to work. Usually someone from the product team, or the founder themselves, gives a demo of the product to the clinical team.</p>
+                                                <p>Then, clinicians get their own accounts and start exploring the product. But there’s a crucial step many teams miss—and that's where we come in.</p>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-16 text-center">
+                                    <button class="bg-gray-900 text-white font-bold text-lg px-10 py-5 rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-800 hover:-translate-y-1 transition-all">
+                                        Get Involved with CQAaS
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function renderAbout() {
+            return `
+                <div class="page-enter page-enter-active">
+                    <section class="py-24 px-6 md:px-12 bg-white min-h-screen">
+                        <div class="container mx-auto max-w-4xl">
+                            <!-- Breadcrumb -->
+                            <div class="flex items-center gap-2 text-sm text-gray-400 mb-8 font-medium">
+                                <a href="#home" onclick="router('home')" class="hover:text-tint-red">Home</a>
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                                <span class="text-gray-800">About</span>
+                            </div>
+
+                            <div class="mb-16 border-b border-gray-100 pb-10">
+                                 <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">About TinT</h1>
+                                 <p class="text-2xl text-gray-500 font-serif italic">Bridging the gap between Psychology and Technology</p>
+                            </div>
+                           
+                            <div class="flex flex-col md:flex-row gap-12">
+                                <div class="md:w-3/4 prose prose-lg prose-indigo text-gray-700">
+                                    <p class="lead text-xl font-medium text-gray-900">Hello, I’m Harshali. I started TinT.</p>
+
+                                    <p>Before TinT, I started a newsletter called <strong>Dog Ears For Your Career</strong> as a corner for Mental-health+Tech news, project, and people.</p>
+
+                                    <p>Before DEFYC I started a startup called <strong>The Mental Health Company</strong>. I was building speech and vision intelligence tools for training and supervision for therapists, solving for the mental health provider shortage by building for effective training.</p>
+
+                                    <p>Before TMHC I was running an email group, coaching therapists to hone their skills and create multiple sources of income via disciplines like design and research, in order to ease up some of the finical burden off of their therapy practice.</p>
+
+                                    <p>All of this started when I first became an experience designer for a pioneering psychiatrist-psychotherapist. I was designing an online group therapy experience for them when the COVID pandemic hit. Talk about timing.</p>
+
+                                    <p>I've collaborated with therapists as an experience designer, event manager, community organiser, sketch-noter, grants writer, career pivots counsellor, cat-sitter, that one time as a wall painter, and more recently as an AI product founder.</p>
+
+                                    <blockquote class="text-2xl font-serif not-italic my-10 bg-tint-offwhite p-8 rounded-xl border-l-0 relative">
+                                        <i class="fa-solid fa-quote-left text-tint-red opacity-20 text-4xl absolute top-4 left-4"></i>
+                                        <span class="relative z-10 font-bold text-gray-900">"The point I’m trying to make is, I’ve observed the clinical community from both inside and out."</span>
+                                    </blockquote>
+
+                                    <p>I’m not a clinician. I’m a tech worker. The amount of money and tools at my disposal simply because I was amongst other product builders was a little ridiculous. So I started passing over some of it to my peers in the clinical world. One project led to another, and then another, until I became a bridge person between technology and psychology.</p>
+
+                                    <p>And that’s how we’re here today.</p>
+
+                                    <p>I believe basic tech literacy is a necessity to survive in any profession. Advanced tech literacy allows you to thrive and grow your practice.</p>
+
+                                    <p>The hope is to have therapists sit with product builders like me, building tools that are clinically informed, honest, and wholesome.</p>
+                                </div>
+                                
+                                <div class="md:w-1/4">
+                                    <div class="sticky top-24">
+                                        <h3 class="font-bold text-lg mb-4 font-serif">Why Subscribe?</h3>
+                                        <div class="space-y-4">
+                                            <div class="bg-tint-lavender/20 p-5 rounded-xl border border-tint-lavender">
+                                                <h4 class="font-bold text-sm mb-2 text-indigo-900 uppercase tracking-wider">Clinicians</h4>
+                                                <p class="text-sm">Get an informed, fact-backed response when people say AI will take your job.</p>
+                                            </div>
+                                            <div class="bg-tint-offwhite p-5 rounded-xl border border-gray-200">
+                                                <h4 class="font-bold text-sm mb-2 text-gray-900 uppercase tracking-wider">Technologists</h4>
+                                                <p class="text-sm">Develop a clinical lens toward technology and a vocabulary to collaborate with therapists.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!-- Subscribe Box -->
+                            <div class="mt-20 bg-gray-900 text-white p-10 rounded-3xl text-center shadow-xl">
+                                <i class="fa-regular fa-paper-plane text-4xl mb-4 text-tint-red"></i>
+                                <h4 class="font-bold font-serif text-3xl mb-4">Join the community</h4>
+                                <p class="text-gray-400 mb-8">Join thousands of others.</p>
+                                <form onsubmit="event.preventDefault(); alert('Subscribed!');" class="flex flex-col sm:flex-row shadow-lg rounded-xl overflow-hidden gap-2 max-w-lg mx-auto">
+                                    <input type="email" placeholder="Your email address" required class="bg-white/10 text-white px-6 py-4 outline-none flex-grow placeholder-gray-400 rounded-lg border border-white/20 focus:border-tint-red transition-colors">
+                                    <button type="submit" class="bg-tint-red text-white font-bold px-8 py-4 hover:bg-tint-redHover transition-colors rounded-lg">
+                                        Subscribe
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function renderBlogList() {
+            const sortedBlogs = [...blogsData].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const blogCardsHTML = sortedBlogs.map(blog => `
+                <div onclick="router('blog/${blog.slug}')" class="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-2xl hover:-translate-y-2 transition-all border border-gray-100 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        ${blog.featured ? `<div class="absolute top-4 right-4 bg-tint-red text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-md">Featured</div>` : ''}
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${blog.tags.map(tag => `<span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider group-hover:bg-tint-lavender group-hover:text-indigo-900 transition-colors">#${tag}</span>`).join('')}
+                        </div>
+                        <h2 class="text-2xl font-serif font-bold mb-4 group-hover:text-tint-red transition-colors text-gray-900 leading-tight">${blog.title}</h2>
+                        <div class="text-gray-600 mb-6 line-clamp-3 text-sm leading-relaxed">${blog.body.replace(/<[^>]*>?/gm, '')}</div>
+                        <div class="mt-auto flex items-center justify-between pt-6 border-t border-gray-100 text-xs text-gray-400 font-bold uppercase tracking-wider">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-calendar"></i> ${blog.date}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-clock"></i> ${blog.readTime}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="page-enter page-enter-active">
+                    <section class="bg-tint-offwhite py-24 px-6 md:px-12 min-h-screen">
+                        <div class="container mx-auto">
+                            <div class="max-w-4xl mx-auto mb-20 text-center">
+                                <span class="text-tint-red font-bold tracking-widest uppercase text-sm mb-4 block">The Journal</span>
+                                <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">All Posts</h1>
+                                <p class="text-xl text-gray-500 max-w-2xl mx-auto">Exploring the intersection of humanity, psychology, and algorithms. One article at a time.</p>
+                            </div>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                ${blogCardsHTML}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function renderBlogPost(slug) {
+            const blog = blogsData.find(b => b.slug === slug);
+            
+            if (!blog) {
+                return `<div class="p-20 text-center text-2xl font-serif">Blog not found. <br><a href="#blogs" onclick="router('blogs')" class="text-tint-red underline mt-4 block text-base font-sans">Back to blogs</a></div>`;
+            }
+
+            return `
+                <div class="page-enter page-enter-active">
+                    <article class="py-24 px-6 md:px-12 bg-white">
+                        <div class="container mx-auto max-w-3xl">
+                             <!-- Breadcrumb -->
+                            <div class="flex items-center gap-2 text-sm text-gray-400 mb-12 font-medium justify-center">
+                                <a href="#blogs" onclick="router('blogs')" class="hover:text-tint-red">All Posts</a>
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                                <span class="text-gray-800 line-clamp-1 max-w-[200px]">${blog.title}</span>
+                            </div>
+
+                            <!-- Header -->
+                            <div class="mb-12 text-center">
+                                <div class="flex justify-center gap-2 mb-8">
+                                    ${blog.tags.map(tag => `<span class="bg-tint-lavender/50 text-indigo-900 text-xs px-4 py-1.5 rounded-full font-bold uppercase tracking-widest">${tag}</span>`).join('')}
+                                </div>
+                                <h1 class="text-4xl md:text-6xl font-serif font-black text-gray-900 mb-8 leading-tight">${blog.title}</h1>
+                                <div class="text-gray-500 font-medium flex justify-center gap-6 text-sm uppercase tracking-wider">
+                                    <span class="flex items-center gap-2"><i class="fa-regular fa-calendar"></i> ${blog.date}</span>
+                                    <span class="text-gray-300">|</span>
+                                    <span class="flex items-center gap-2"><i class="fa-regular fa-clock"></i> ${blog.readTime}</span>
+                                </div>
+                            </div>
+
+                            <!-- Hero Image -->
+                            <div class="rounded-3xl overflow-hidden shadow-2xl mb-16 h-[300px] md:h-[500px]">
+                                <img src="${blog.image}" alt="${blog.title}" class="w-full h-full object-cover">
+                            </div>
+
+                            <!-- Content -->
+                            <div class="prose prose-lg prose-indigo mx-auto text-gray-700 first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-3 first-letter:float-left first-letter:text-tint-red">
+                                ${blog.body}
+                            </div>
+                            
+                            <!-- Author Box -->
+                            <div class="mt-20 p-8 bg-tint-offwhite rounded-2xl flex items-center gap-6">
+                                <div class="w-16 h-16 bg-tint-red rounded-full flex items-center justify-center text-white text-2xl font-serif font-bold">H</div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Written by</p>
+                                    <p class="font-serif font-bold text-xl text-gray-900">Harshali</p>
+                                    <p class="text-sm text-gray-500">Founder of TinT & Product Builder</p>
+                                </div>
+                            </div>
+
+                            <!-- Back Button -->
+                            <div class="mt-16 pt-10 border-t border-gray-100 text-center">
+                                <button onclick="router('blogs')" class="inline-flex items-center gap-2 text-gray-900 font-bold hover:text-tint-red transition-colors px-6 py-3 border border-gray-200 rounded-full hover:border-tint-red">
+                                    <i class="fa-solid fa-arrow-left"></i> Back to all posts
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            `;
+        }
+
+        function renderResources() {
+            const resourcesHTML = resourcesData.map(r => `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 flex flex-col h-full transform hover:-translate-y-1">
+                    <div class="h-64 overflow-hidden relative group">
+                         <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-bold border-2 border-white px-6 py-2 rounded-full">View Details</span>
+                         </div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-900 leading-tight">${r.title}</h3>
+                        <p class="text-gray-500 mb-6 flex-grow text-sm leading-relaxed">${r.description}</p>
+                        <a href="${r.link}" class="mt-auto block text-center bg-white text-gray-900 font-bold py-3 rounded-lg border-2 border-gray-100 hover:border-tint-red hover:text-tint-red transition-colors">
+                            Buy Now
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="page-enter page-enter-active">
+                    <section class="bg-tint-lavender min-h-screen py-24 px-6 md:px-12 relative overflow-hidden">
+                        <!-- BG Decoration -->
+                        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-white opacity-20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+
+                        <div class="container mx-auto relative z-10">
+                            <div class="text-center mb-20 max-w-2xl mx-auto">
+                                <span class="bg-white/50 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-gray-800 mb-6 inline-block backdrop-blur">Library</span>
+                                <h1 class="text-5xl md:text-6xl font-serif font-black mb-6 text-gray-900">Curated Resources</h1>
+                                <p class="text-xl text-gray-700 font-light">Books, tools, and guides to help you navigate the future of therapy with confidence.</p>
+                            </div>
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                ${resourcesHTML}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // --- ROUTER & APP LOGIC ---
+
+        const app = document.getElementById('app');
+        const header = document.getElementById('main-header');
+
+        function updateActiveNav(route) {
+            // Remove active class from all
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active', 'text-tint-red');
+                if (link.getAttribute('href') === '#' + route) {
+                    link.classList.add('active', 'text-tint-red');
+                }
+            });
+
+            // Handle Blog detail view active state
+            if (route.startsWith('blog/')) {
+                 document.querySelector('a[href="#blogs"]').classList.add('active', 'text-tint-red');
+            }
+        }
+
+        function router(routeInput) {
+            let route = routeInput;
+            
+            if(!route) {
+                route = window.location.hash.slice(1) || 'home';
+            }
+
+            // Close mobile menu
+            const menu = document.getElementById('mobile-menu');
+            if(!menu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+
+            // Render view
+            let html = '';
+            if (route === 'home') {
+                html = renderHome();
+            } else if (route === 'about') {
+                html = renderAbout();
+            } else if (route === 'blogs') {
+                html = renderBlogList();
+            } else if (route === 'resources') {
+                html = renderResources();
+            } else if (route.startsWith('blog/')) {
+                const slug = route.split('/')[1];
+                html = renderBlogPost(slug);
+            } else {
+                html = renderHome();
+                route = 'home';
+            }
+            
+            // Apply HTML and update state
+            app.innerHTML = html;
+            window.location.hash = route;
+            updateActiveNav(route);
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function scrollToSubscribe() {
+            const inputs = document.querySelectorAll('input[type="email"]');
+            if(inputs.length > 0) {
+                inputs[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                inputs[0].focus();
+            }
+        }
+
+        // --- INITIALIZATION ---
+
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.slice(1);
+            router(hash || 'home');
+        });
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            router(hash);
+        });
+        
+        // Sticky Header visual adjustment
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md', 'bg-tint-lavender/95', 'backdrop-blur');
+                header.classList.remove('bg-tint-lavender');
+            } else {
+                header.classList.remove('shadow-md', 'bg-tint-lavender/95', 'backdrop-blur');
+                header.classList.add('bg-tint-lavender');
+            }
+        });
+
+    </script>
+</body>
+</html>
